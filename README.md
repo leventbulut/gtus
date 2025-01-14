@@ -1,4 +1,6 @@
 ![PyPI](https://img.shields.io/pypi/v/gtus?color=blue)
+![Downloads](https://img.shields.io/pypi/dm/gtus)
+
 
 # GTUS - Google Trends for US States
 
@@ -135,6 +137,12 @@ The DataFrame will have the following structure:
 - `pytrends`
 - `aiohttp`
 - `openpyxl`
+
+---
+
+### Maintainer
+* Levent Bulut, github: [leventbulut](https://github.com/leventbulut)
+
 
 ---
 
