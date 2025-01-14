@@ -1,132 +1,129 @@
 # GTUS - Google Trends for US States
 
-`gtus`is a Python package that enables users to collect and analyze Google Trends data across various US states. This package is designed to handle multiple queries, manage API delays, and support exporting data to multiple formats, all while being user-friendly and versatile.
+The **GTUS** package is a Python library designed to collect Google Trends data for specified queries across various U.S. states. It provides functionality to handle multiple queries and states efficiently, while adhering to Google Trends API limitations.
 
 ---
 
 ## Features
 
-1. **Collect Google Trends Data:**
-   - Fetch state-level data for multiple queries simultaneously.
-   - Collect data for all US states or specific states.
-   - Customize the timeframe for data collection.
-
-2. **Error Handling and Retry Logic:**
-   - Built-in retry mechanism with exponential backoff to handle rate-limiting errors (`Too Many Requests`).
-
-3. **Data Export Options:**
-   - Save data in Excel format, with each state’s data in separate sheets.
-   - Export data to a JSON file.
-   - Create a consolidated DataFrame for advanced analysis.
-
-4. **Asynchronous Functionality:**
-   - Collect data asynchronously for faster execution.
+- Collect trends for one or multiple states.
+- Batch processing of queries to avoid API limits.
+- Adjustable wait time between requests to manage rate limits.
+- Export collected data to Excel and JSON formats.
+- Access data in a consolidated pandas DataFrame for easy analysis.
 
 ---
 
 ## Installation
 
-Install GTUS via pip:
+To use the GTUS package, ensure you have the required dependencies installed. You can install them using pip:
 
 ```bash
 pip install gtus
 ```
 
+This will automatically install all required dependencies, including `pytrends`, `pandas`, and `aiohttp`.
+
 ---
 
 ## Getting Started
 
-Here's how to start using gtus to collect Google Trends data.
+Here's how to start using GTUS to collect Google Trends data.
 
-## Usage Examples
+### Importing the Package
 
-### 1. Collect Data for All States
+To use the GTUS package, import it as follows:
 
-If no states are specified, GTUS will automatically collect data for all US states:
+```python
+from gtus import GTUS
+```
+
+### 1. Collect Google Trends Data for US States
+
+#### Collecting for One State
+
+To collect data for a single state, create an instance of the `GTUS` class with the desired query and state:
 
 ```python
 from gtus import GTUS
 
 queries = ["telemedicine", "remote work"]
-# Initialize GTUS object without specifying states
-gtus = GTUS(queries=queries, timeframe="2022-01-01 2023-01-01")
+states = ["TX"]
+gtus = GTUS(queries, states, timeframe="2022-01-01 2023-01-01")
 
 # Collect data
 gtus.collect_all_trends()
-
-# Export to Excel
-gtus.export_to_excel("google_trends_all_states.xlsx")
-
-# Export to JSON
-gtus.export_to_json("google_trends_all_states.json")
-
-# Create a consolidated DataFrame
-dataframe = gtus.create_consolidated_dataframe()
-print(dataframe.head())
 ```
 
-### 2. Fetch Data for a Specific State and Query
-You can specify a subset of states and queries:
+#### Collecting for Multiple States
 
+To collect data for multiple states, simply provide a list of states:
 
 ```python
+from gtus import GTUS
+
+queries = ["telemedicine", "remote", "football", "dance"]
 states = ["CA", "NY", "TX"]
+gtus = GTUS(queries, states, timeframe="2020-01-01 2023-01-01")
+
+# Collect data
+gtus.collect_all_trends()
+```
+
+#### Collecting for All States
+
+If no states are specified, GTUS will automatically collect data for all US states:
+
+```python
 queries = ["remote work", "telehealth"]
 
 # Initialize GTUS object
-gtus = GTUS(queries=queries, states=states, timeframe="2022-01-01 2023-01-01")
-
+gtus = GTUS(queries=queries, timeframe="2022-01-01 2023-01-01", wait_time=15)
 ```
 
-### 3. Asynchronous Data Collection
+### Modifying Wait Time
+
+You can adjust the wait time between requests by specifying the `wait_time` parameter when creating the `GTUS` instance. This is useful for managing API rate limits:
 
 ```python
-from gtus import AsyncGTUS
-import asyncio
-
-async def fetch_async():
-    queries = ["online learning", "work from home"]
-
-    # Initialize AsyncGTUS object
-    async_gtus = AsyncGTUS(queries=queries, timeframe="2022-01-01 2023-01-01")
-
-    await async_gtus.collect_all_trends_async()
-
-    # Export to Excel and JSON
-    async_gtus.export_to_excel("async_google_trends.xlsx")
-    async_gtus.export_to_json("async_google_trends.json")
-
-asyncio.run(fetch_async())
+gtus = GTUS(queries, states, wait_time=15)  # Set wait time to 15 seconds
 ```
 
-### 4. Consolidated DataFrame
+### Saving Data
 
-Combine all collected data into a single DataFrame:
+#### Exporting to Excel
+
+To save the collected data to an Excel file, use the `export_to_excel` method:
 
 ```python
-consolidated_df = gtus.create_consolidated_dataframe()
-print(consolidated_df.head())
+gtus.export_to_excel("google_trends_data.xlsx")
 ```
 
----
+#### Exporting to JSON
 
-## Advanced Configuration
-
-### Customize Timeframes
-You can specify custom timeframes for data collection:
+To save the collected data to a JSON file, use the `export_to_json` method:
 
 ```python
-gtus = GTUS(queries=["climate change"], states=["WA"], timeframe="2010-01-01 2020-12-31")
+gtus.export_to_json("google_trends_data.json")
 ```
 
-### Adjust Retry Settings
+### Accessing Data in Python
 
-Customize retry attempts and delays for handling rate limits:
+The data collected can be accessed in a consolidated pandas DataFrame. This allows for easy manipulation and analysis:
 
 ```python
-gtus = GTUS(queries=["data science"], states=["NY"], delay=10)
-result = gtus.fetch_state_trends(query="data science", state="NY", max_retries=5, backoff_factor=2)
+df = gtus.create_consolidated_dataframe()
+print(df.head())
 ```
+
+### Example Output
+
+The DataFrame will have the following structure:
+
+| date       | State | telemedicine | remote work | football | dance |
+|------------|-------|--------------|-------------|----------|-------|
+| 2021-12-26 | CA    | 72.0         | 62.0        | 59.0     | 68.0  |
+| 2021-12-26 | TX    | 73.0         | 59.0        | 67.0     | 70.0  |
 
 ---
 
@@ -135,6 +132,7 @@ result = gtus.fetch_state_trends(query="data science", state="NY", max_retries=5
 - `pandas`
 - `pytrends`
 - `aiohttp`
+- `openpyxl`
 
 ---
 
