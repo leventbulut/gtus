@@ -1,5 +1,12 @@
 # gtus/__init__.py
-from .core import GTUS, AsyncGTUS
+import warnings
 
+# Suppress specific warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
-__all__ = ['GTUS']  
+# You can also import your classes or functions here
+from .core import GTUS, AsyncGTUS  # Import your classes for easy access
+
+__version__ = "0.1.2"
+
+__all__ = ["GTUS"]  
