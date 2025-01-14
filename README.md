@@ -1,3 +1,5 @@
+![PyPI](https://img.shields.io/pypi/v/gtus?color=blue)
+
 # GTUS - Google Trends for US States
 
 The **GTUS** package is a Python library designed to collect Google Trends data for specified queries across various U.S. states. It provides functionality to handle multiple queries and states efficiently, while adhering to Google Trends API limitations.
