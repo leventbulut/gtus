@@ -139,6 +139,12 @@ The DataFrame will have the following structure:
 - `openpyxl`
 
 ---
+## Flowchart
+![Flowchart of the GTUS package data collection process](flowchart.png)
+
+The flowchart illustrates the data collection process within the GTUS package. See images/gtus_flowchart.png for a visual overview of how GTUS retrieves and processes Google Trends data.
+
+---
 
 ### Maintainer
 * Levent Bulut, github: [leventbulut](https://github.com/leventbulut)
