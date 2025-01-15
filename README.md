@@ -140,9 +140,11 @@ The DataFrame will have the following structure:
 
 ---
 ## Flowchart
+The flowchart below illustrates the data collection process within the GTUS package. It shows a visual overview of how GTUS retrieves and processes Google Trends data. GTUS intelligently manages multiple Google Trends queries to avoid API limits by using a combination of batching and strategic pausing. It groups queries into smaller batches and processes each batch sequentially, introducing wait times between batches to prevent exceeding the API rate limits. This ensures efficient data collection without interruptions.
+
 ![Flowchart of the GTUS package data collection process](flowchart.png)
 
-The flowchart illustrates the data collection process within the GTUS package. See images/gtus_flowchart.png for a visual overview of how GTUS retrieves and processes Google Trends data.
+
 
 ---
 
